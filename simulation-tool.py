@@ -3,6 +3,21 @@ import numpy as np
 import time
 import copy
 
+class KalmanFilter:
+
+    kf = cv2.KalmanFilter(4, 2)
+    kf.measurementMatrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0]], np.float32)
+    kf.transitionMatrix = np.array([[1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0], [0, 0, 0, 1]], np.float32)
+
+    def Estimate(self, coordX, coordY):
+        ''' This function estimates the position of the object'''
+        measured = np.array([[np.float32(coordX)], [np.float32(coordY)]])
+        self.kf.correct(measured)
+        predicted = self.kf.predict()
+        return predicted
+
+
+
 # Define a vehicle with line trajectory
 class lineTrajectory:
     'linear equations: y=ax+b '
@@ -232,7 +247,7 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 output_movie = cv2.VideoWriter('simulation.mp4', fourcc, 20, (1280, 720))
 
 # Set background
-background=cv2.imread('images/ground2.jpg',1)
+background=cv2.imread('images/ground1.jpg',1)
 
 # Set parameters for UAV
 # UAV_speed = 15
@@ -245,9 +260,9 @@ background=cv2.imread('images/ground2.jpg',1)
 
 # Initialization vehicles
 vehicles =[]
-vehicles.append( lineTrajectory(700, 0.15, 390, 'car', 'yellow', 12) )
+vehicles.append( lineTrajectory(700, 0.15, 390, 'car1', 'yellow', 12) )
 vehicles.append( lineTrajectory(300, 0, 320, 'car', 'red', 16) )
-vehicles.append( lineTrajectory(1000, 0, 220, 'car2', 'green', -14) )
+vehicles.append( lineTrajectory(1000, 0, 220, 'car1', 'green', -14) )
 vehicles.append( lineTrajectory(-50, 0, 400, 'car1', 'white', 16) )
 vehicles.append( lineTrajectory(-500, 0, 500, 'truck', 'cyan', 16) )
 
