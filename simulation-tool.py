@@ -136,7 +136,7 @@ vehicles.append( Trajectory(500, 0, 350, 'car', 'yellow', 20,0.0013,random.randi
 vehicles.append( Trajectory(700, 0, 320, 'car', 'red', 10,0.0011,random.randint(1,10),1) )
 vehicles.append( Trajectory(250, 0, 220, 'car', 'green', 11,0.001,random.randint(1,10),2) )
 vehicles.append( Trajectory(200, 0, 350, 'car', 'blue', 11,0.0012,random.randint(1,10),3) )
-vehicles.append( Trajectory(-100, 0, 450, 'car', 'pink',12,0.0011,random.randint(1,10),4))
+vehicles.append( Trajectory(-100, 0, 450, 'car', 'pink',12,0.0011,9,4))
 vehicles.append( Trajectory(-50, 0, 300, 'car', 'pink',10,0,0,5) )          
 vehicles.append( Trajectory(1000, 0, 450, 'car', 'green',10,0,0,6) )
 vehicles.append( Trajectory(1700, 0, 300, 'car', 'yellow',10,0,0,7) )
@@ -175,7 +175,8 @@ num_min = 0
 num_reject = 0
 list_reject = []
 controll = 0
-
+p = [1,1,1,1,1]
+utility = list_vehicle[0].weight+list_vehicle[1].weight+list_vehicle[2].weight+list_vehicle[3].weight+list_vehicle[4].weight
 
 #Draw vehicle on image
 def drawVehicle(image: np.zeros((720,1280,3), np.uint8), center_coordinates, vehicletype, color):
@@ -266,17 +267,18 @@ def findROI(list_vehicle_coordinates:list):
 
     
 
-def drawUAVInfo(image, speed, location, altitude, _time, num_tracking=4, num_missing=0):
+def drawUAVInfo(image, speed, location, altitude, _time, num_tracking=4, num_missing=0, utility=utility):
     black_block = np.zeros((35,1280,3), np.uint8)
     image[0:35, 0:1280] = black_block
     font = cv2.FONT_HERSHEY_SIMPLEX
     color = (255, 255, 255)
     image = cv2.putText(image, 'Speed: '+str(speed), (80,22), font , 0.6, color, 1, cv2.LINE_AA)
-    image = cv2.putText(image, 'Location: '+str(location), (280,22), font , 0.6, color, 1, cv2.LINE_AA)
-    image = cv2.putText(image, 'Altitude: '+str(altitude), (540,22), font , 0.6, color, 1, cv2.LINE_AA)
-    image = cv2.putText(image, 'Time: '+str(_time), (720,22), font , 0.6, color, 1, cv2.LINE_AA)
-    image = cv2.putText(image, 'Num_Tracking: '+str(num_tracking), (860,22), font , 0.6, color, 1, cv2.LINE_AA)
-    image = cv2.putText(image, 'Num_Missing: '+str(num_missing), (1080,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Location: '+str(location), (240,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Altitude: '+str(altitude), (450,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Time: '+str(_time), (580,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Num_Tracking: '+str(num_tracking), (710,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Num_Missing: '+str(num_missing), (900,22), font , 0.6, color, 1, cv2.LINE_AA)
+    image = cv2.putText(image, 'Utility: '+str(utility), (1080,22), font , 0.6, color, 1, cv2.LINE_AA)
     return image
 def updateVehicle (controll:int,num:int,location_x_uav : int) :
     num_comeback = -1
@@ -285,6 +287,7 @@ def updateVehicle (controll:int,num:int,location_x_uav : int) :
     if (controll != 0 ):
         #dreject object tracking
         list_reject.append(num)
+        p[num] = 0 
         print("list reject",list_reject)
         # for i,vehicle in enumerate(list_vehicle):
         #     if vehicle.identify==num :
@@ -302,6 +305,7 @@ def updateVehicle (controll:int,num:int,location_x_uav : int) :
             print("xxxxxxxx")
             print("comback")
             num_comeback = list_reject[i]
+            p[num_comeback] = 1
             del list_reject[i]
             break
         # print(type(list_vehicle_coordinates))
@@ -327,6 +331,20 @@ def updateVehicle_predict(controll:int ):
     # print(list_vehicle_predict)
     return (list_vehicle_predict)
 
+def time_cumulative_utility (num_max : int,num_min :int) :
+    function_num_min = 0
+    function_num_max = 0
+    utility = 0
+    for i in range(len(list_must_vehicle)) :
+        if i == num_min :
+            function_num_min += p[i] * list_must_vehicle[i].weight
+        if i == num_max :
+            function_num_max += p[i] * list_must_vehicle[i].weight
+    if (function_num_max > function_num_min) :
+        num_reject = num_min
+    else :
+        num_reject = num_max
+    return num_reject
 
 def avoid_vehicle() :
     slow = 0
@@ -436,9 +454,12 @@ def avoid_vehicle() :
 #Running
 while(1):
     count+=1
+    utility = 0
     #list_vehicle_tracking initially
     list_vehicle_coordinates,num_reject,controll =updateVehicle(controll,num_reject,locationx)
     ###### Animation UAV Flight ###########  BLOCK_START ############
+    for i in range(len(list_must_vehicle)) :
+        utility += list_must_vehicle[i].weight * p[i]  
     if UAV_speed_x >= 0:
     # UAV move forward
         new_background = np.zeros((720,1280,3), dtype=np.uint8)
@@ -472,8 +493,7 @@ while(1):
 
     print(vehicles[0].location_x)
     #Draw info of UAV
-    cur_scene = drawUAVInfo(cur_scene, (UAV_speed_x, UAV_speed_y), (locationx,locationy), 70, count,len(list_vehicle),5-len(list_vehicle))
-
+    
     avoid_vehicle()
     for vehicle in vehicles:
         # vehicle.weight = random.randint(10)
@@ -484,6 +504,7 @@ while(1):
         vehicle.update()
         vehicle.UAVturnRight(UAV_speed_y)
         vehicle.UAVmoveForward(UAV_speed_x)
+
     ROI,num_max,num_min = findROI(list_vehicle_coordinates)
     # xcenter_ROI = int((ROI[0][0]+ROI[1][0])/2)
     # ycenter_ROI = int((ROI[0][1]+ROI[1][1])/2)
@@ -500,12 +521,10 @@ while(1):
     center_ROI =(xcenter_ROI_predict, ycenter_ROI_predict)
     drawROI(cur_scene, ROI_predict[0], ROI_predict[1],(255,255,0))
     if ((ROI_predict[1][0] - ROI_predict[0][0]) > 1200) :
-        if (vehicles[num_max].weight > vehicles[num_min].weight) : 
-                num_reject = num_min
-        else : 
-                num_reject = num_max
+        num_reject=time_cumulative_utility(num_max,num_min)
         controll = 1
     # print(controll)
+    cur_scene = drawUAVInfo(cur_scene, (UAV_speed_x, UAV_speed_y), (locationx,locationy), 70, count,len(list_vehicle),5-len(list_vehicle),utility)
 
 
     # cur_scene = cv2.putText(cur_scene, 'PredictiveROI', ROI_predict[1], cv2.FONT_HERSHEY_SIMPLEX , 0.6, (255,255,0), 2, cv2.LINE_AA)
@@ -543,6 +562,6 @@ while(1):
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
         break
-
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+del vehicles,list_vehicle_coordinates,list_vehicle,list_vehicle_predict,list_must_vehicle,list_vehicle_predict,locationx,locationy,cur_scene,count,numObj,num_max,num_min
