@@ -154,15 +154,20 @@ vehicles.append( Trajectory(7000, 0, 300, 'car', 'red',10,0,0,14) )
 vehicles.append( Trajectory(8500, 0, 290, 'car', 'blue',10,0,0,15) )
 # vehicles.append( Trajectory(5000, 0, 250, 'car', 'blue',2,0,0,19) )
 vehicles.append( Trajectory(9000, 0, 400, 'car', 'blue',10,0,0,16) )
+
 # vehicles.append( Trajectory(5000, 0, 450, 'car', 'blue',2,0,0,21) )
 # vehicles.append( Trajectory(5000, 0, 550, 'car', 'blue',2,0,0,22) )
 # vehicles.append( Trajectory(950, 0, 350, 'car', 'red',10,0.005,0) )
+
+
+bridge = Trajectory(1000,0,360,'bridge','1',0,0,0,0)
+
 list_vehicle = [vehicles[0], vehicles[1], vehicles[2],vehicles[3],vehicles[4]]
 list_must_vehicle = [vehicles[0], vehicles[1], vehicles[2],vehicles[3],vehicles[4]]
 list_vehicle_identify = [0,1,2,3,4] 
 list_vehicle_coordinates = []
 list_vehicle_predict = []
-print((list_vehicle))
+# print((list_vehicle))
 numObj = 4
 uav = uav_class()
 count = 0
@@ -491,7 +496,6 @@ while(1):
     cur_scene = copy.copy(background)
     ###### Animation UAV Flight ###########  BLOCK_END ############
 
-    print(vehicles[0].location_x)
     #Draw info of UAV
     
     avoid_vehicle()
@@ -504,7 +508,6 @@ while(1):
         vehicle.update()
         vehicle.UAVturnRight(UAV_speed_y)
         vehicle.UAVmoveForward(UAV_speed_x)
-
     ROI,num_max,num_min = findROI(list_vehicle_coordinates)
     # xcenter_ROI = int((ROI[0][0]+ROI[1][0])/2)
     # ycenter_ROI = int((ROI[0][1]+ROI[1][1])/2)
@@ -549,15 +552,11 @@ while(1):
         for vehicle in list_vehicle :
             if (vehicle.speedStart > uav.speedMax) :
                 controll = 1
-    # if (count == 300 ) : 
-    #     vehicles[1].accel == -0.15
-    # if (count == 350 ) :
-    #     vehicles[0].accel == -0.5
     cv2.imshow('frame',cur_scene)
     output_movie.write(cur_scene)
     locationx = locationx + UAV_speed_x
     locationy = locationy + UAV_speed_y
-    print(locationx,locationy)
+    # print(locationx,locationy)
     time.sleep(0.1)
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
