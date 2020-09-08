@@ -1,3 +1,9 @@
+#Chiều cao Antena UE và UAV trong khoảng 1.5m đến 22.5m
+# Góc mở Camera là 72 độ
+#Chọn chiều cao UAV là 15m
+#Khung hình thu được từ camera 1280:720 tương ứng vị trí ngoài thực tế là (21.79:12.26) mét 
+#Mỗi pixel trong khung hình có kích thước ngoài thực tế là (0.017:0.017) mét 
+#Ô tô có kích thước ngoài thực tế (4.5:1.8) mét tương ứng 265:105 trong khung hình  
 import cv2
 import numpy as np 
 import time
@@ -5,7 +11,8 @@ import copy
 from numpy import random
 from threading import Thread
 import threading
-import imutils
+#import imutils
+
 class KalmanFilter:
     def __init__(self) :
         self.kf = cv2.KalmanFilter(4, 2)
@@ -82,10 +89,10 @@ class Trajectory:
         new_coordinate = (int(new_x),int(new_y))
         self.current_coordinate = new_coordinate
 
-    def UAVturnRight(self, UAVspeed):
+    def UAVturnRight(self, UAVspeedy):
         cur_x, cur_y = self.current_coordinate
         new_x = cur_x
-        new_y = cur_y - UAVspeed
+        new_y = cur_y - UAVspeedy
         new_coordinate = (int(new_x),int(new_y))
         self.current_coordinate = new_coordinate
     def __delete__(self) : 
@@ -125,7 +132,45 @@ class uav_class:
         self.speed = new_speed
         self.speed_int = round(self.speed)
 
-# def rejectObj(vehicle: list,): 
+file_UAV_0 = open("UAV_trajectory/UAV_0_trajectory.txt", "a")
+file_UAV_1 = open("UAV_trajectory/UAV_1_trajectory.txt", "a")
+file_UAV_2 = open("UAV_trajectory/UAV_2_trajectory.txt", "a")
+file_UAV_3 = open("UAV_trajectory/UAV_3_trajectory.txt", "a")
+file_UAV_4 = open("UAV_trajectory/UAV_4_trajectory.txt", "a")
+file_UAV_5 = open("UAV_trajectory/UAV_5_trajectory.txt", "a")
+
+file_ue_0 = open("UE_trajectory/ue_0_trajectory.txt", "a")
+file_ue_1 = open("UE_trajectory/ue_1_trajectory.txt", "a")
+file_ue_2 = open("UE_trajectory/ue_2_trajectory.txt", "a")
+file_ue_3 = open("UE_trajectory/ue_3_trajectory.txt", "a")
+file_ue_4 = open("UE_trajectory/ue_4_trajectory.txt", "a")
+file_ue_5 = open("UE_trajectory/ue_5_trajectory.txt", "a")
+file_ue_6 = open("UE_trajectory/ue_6_trajectory.txt", "a")
+file_ue_7 = open("UE_trajectory/ue_7_trajectory.txt", "a")
+file_ue_8 = open("UE_trajectory/ue_8_trajectory.txt", "a")
+file_ue_9 = open("UE_trajectory/ue_9_trajectory.txt", "a")
+
+file_ue_10 = open("UE_trajectory/ue_10_trajectory.txt", "a")
+file_ue_11 = open("UE_trajectory/ue_11_trajectory.txt", "a")
+file_ue_12 = open("UE_trajectory/ue_12_trajectory.txt", "a")
+file_ue_13 = open("UE_trajectory/ue_13_trajectory.txt", "a")
+file_ue_14 = open("UE_trajectory/ue_14_trajectory.txt", "a")
+file_ue_15 = open("UE_trajectory/ue_15_trajectory.txt", "a")
+file_ue_16 = open("UE_trajectory/ue_16_trajectory.txt", "a")
+file_ue_17 = open("UE_trajectory/ue_17_trajectory.txt", "a")
+file_ue_18 = open("UE_trajectory/ue_18_trajectory.txt", "a")
+file_ue_19 = open("UE_trajectory/ue_19_trajectory.txt", "a")
+
+file_ue_20 = open("UE_trajectory/ue_20_trajectory.txt", "a")
+file_ue_21 = open("UE_trajectory/ue_21_trajectory.txt", "a")
+file_ue_22 = open("UE_trajectory/ue_22_trajectory.txt", "a")
+file_ue_23 = open("UE_trajectory/ue_23_trajectory.txt", "a")
+file_ue_24 = open("UE_trajectory/ue_24_trajectory.txt", "a")
+file_ue_25 = open("UE_trajectory/ue_25_trajectory.txt", "a")
+file_ue_26 = open("UE_trajectory/ue_26_trajectory.txt", "a")
+file_ue_27 = open("UE_trajectory/ue_27_trajectory.txt", "a")
+file_ue_28 = open("UE_trajectory/ue_28_trajectory.txt", "a")
+file_ue_29 = open("UE_trajectory/ue_29_trajectory.txt", "a")
 
 
 #Output video
@@ -150,11 +195,11 @@ partition = cv2.resize(partition,dsize)
 # Initialization vehicles
 vehicles =[]
 #group 1
-vehicles.append( Trajectory(900, 0, 350, 'car', 'yellow', 20 ,0.0013,random.randint(1,10),0) )
-vehicles.append( Trajectory(700, 0, 320, 'car', 'red', 11,0.0011,random.randint(1,10),1) )
-vehicles.append( Trajectory(250, 0, 400, 'car', 'green', 11,0.0011,random.randint(1,10),2) )
-vehicles.append( Trajectory(200, 0, 300, 'car', 'blue', 11,0.0011,random.randint(1,10),3) )
-vehicles.append( Trajectory(-100, 0, 450, 'car', 'pink',11,0.0011,random.randint(1,10),4))
+vehicles.append( Trajectory(900, 0, 350, 'car', 'yellow', 2,0.0011,random.randint(1,10),0) )
+vehicles.append( Trajectory(620, 0, 250, 'car', 'red', 2,0.0011,random.randint(1,10),1) )
+vehicles.append( Trajectory(250, 0, 400, 'car', 'green', 2,0.0011,random.randint(1,10),2) )
+vehicles.append( Trajectory(200, 0, 300, 'car', 'blue', 2,0.0011,random.randint(1,10),3) )
+vehicles.append( Trajectory(-100, 0, 480, 'car', 'pink',2,0.0011,random.randint(1,10),4))
 # vehicles.append( Trajectory(-50, 0, 300, 'car', 'orange',11,0.0011,random.randint(1,10),5) )     
 # vehicles.append( Trajectory(600, 0, 400, 'car', 'red',11,0.0011,random.randint(1,10),6) )  
 # vehicles.append( Trajectory(500, 0, 220, 'car', 'yellow',11,0.0011,random.randint(1,10),7) )     
@@ -163,11 +208,11 @@ vehicles.append( Trajectory(-100, 0, 450, 'car', 'pink',11,0.0011,random.randint
 
 #group 2
 
-vehicles.append( Trajectory(1940, 0, 220, 'car', 'blue',11,0.0011,random.randint(1,10),5) )       
-vehicles.append( Trajectory(2200, 0, 380, 'car', 'red',11,0.0011,random.randint(1,10),6) )       
-vehicles.append( Trajectory(2400, 0, 470, 'car', 'green',11,0.0011,random.randint(1,10),7) )       
-vehicles.append( Trajectory(2620, 0, 250, 'car', 'orange',11,0.0011,random.randint(1,10),8) )       
-vehicles.append( Trajectory(2800, 0, 300, 'car', 'yellow',11,0.0011,random.randint(1,10),9) )       
+vehicles.append( Trajectory(2580, 0, 220, 'car', 'blue',2,0.0012,random.randint(1,10),5) )       
+vehicles.append( Trajectory(2800, 0, 480, 'car', 'red',2,0.0012,random.randint(1,10),6) )       
+vehicles.append( Trajectory(3120, 0, 470, 'car', 'green',2,0.0012,random.randint(1,10),7) )       
+vehicles.append( Trajectory(3300, 0, 250, 'car', 'orange',2,0.0012,random.randint(1,10),8) )       
+vehicles.append( Trajectory(3400, 0, 400, 'car', 'yellow',2,0.0012,random.randint(1,10),9) )       
 # vehicles.append( Trajectory(2600, 0, 350, 'car', 'red',11,0.0011,random.randint(1,10),15) )  
 # vehicles.append( Trajectory(2700, 0, 520, 'car', 'yellow',11,0.0011,random.randint(1,10),16) )  
 # vehicles.append( Trajectory(2900, 0, 350, 'car', 'green',11,0.0011,random.randint(1,10),17) )  
@@ -175,11 +220,11 @@ vehicles.append( Trajectory(2800, 0, 300, 'car', 'yellow',11,0.0011,random.randi
 # vehicles.append( Trajectory(3000, 0, 500, 'car', 'orange',11,0.0011,random.randint(1,10),19) )  
 
 #group 3
-vehicles.append( Trajectory(3900, 0, 330, 'car', 'yellow',11,0.0013,random.randint(1,10),10) )       
-vehicles.append( Trajectory(4100, 0, 200, 'car', 'blue',11,0.0013,random.randint(1,10),11) )       
-vehicles.append( Trajectory(4350, 0, 500, 'car', 'red',11,0.0013,random.randint(1,10),12) )       
-vehicles.append( Trajectory(4670, 0, 420, 'car', 'orange',11,0.0013,random.randint(1,10),13) )       
-vehicles.append( Trajectory(4800, 0, 300, 'car', 'blue',11,0.0013,random.randint(1,10),14) )       
+vehicles.append( Trajectory(5140, 0, 330, 'car', 'yellow',2,0.0013,random.randint(1,10),10) )       
+vehicles.append( Trajectory(5400, 0, 280, 'car', 'blue',2,0.0013,random.randint(1,10),11) )       
+vehicles.append( Trajectory(5500, 0, 500, 'car', 'red',2,0.0013,random.randint(1,10),12) )       
+vehicles.append( Trajectory(5750, 0, 420, 'car', 'orange',2,0.0013,random.randint(1,10),13) )       
+vehicles.append( Trajectory(6000, 0, 300, 'car', 'blue',2,0.0013,random.randint(1,10),14) )       
 # vehicles.append( Trajectory(4400, 0, 370, 'car', 'yellow',11,0.0013,random.randint(1,10),25) )    
 # vehicles.append( Trajectory(4620, 0, 470, 'car', 'red',11,0.0013,random.randint(1,10),26) )  
 # vehicles.append( Trajectory(4700, 0, 270, 'car', 'green',11,0.0013,random.randint(1,10),27) )  
@@ -187,11 +232,11 @@ vehicles.append( Trajectory(4800, 0, 300, 'car', 'blue',11,0.0013,random.randint
 # vehicles.append( Trajectory(5020, 0, 200, 'car', 'blue',11,0.0013,random.randint(1,10),29) )     
 
 #group 4
-vehicles.append( Trajectory(5800, 0, 500, 'car', 'blue',11,0.0013,random.randint(1,10),15) )       
-vehicles.append( Trajectory(5970, 0, 220, 'car', 'green',11,0.0013,random.randint(1,10),16) )       
-vehicles.append( Trajectory(6170, 0, 370, 'car', 'red',11,0.0013,random.randint(1,10),17) )       
-vehicles.append( Trajectory(6450, 0, 400, 'car', 'yellow',11,0.0013,random.randint(1,10),18) )       
-vehicles.append( Trajectory(6770, 0, 500, 'car', 'green',11,0.0013,random.randint(1,10),19) )       
+vehicles.append( Trajectory(7680, 0, 500, 'car', 'blue',2,0.0014,random.randint(1,10),15) )       
+vehicles.append( Trajectory(7890, 0, 220, 'car', 'green',2,0.0014,random.randint(1,10),16) )       
+vehicles.append( Trajectory(8230, 0, 370, 'car', 'red',2,0.0014,random.randint(1,10),17) )       
+vehicles.append( Trajectory(8430, 0, 500, 'car', 'yellow',2,0.0014,random.randint(1,10),18) )       
+vehicles.append( Trajectory(8460, 0, 250, 'car', 'green',2,0.0014,random.randint(1,10),19) )       
 # vehicles.append( Trajectory(6450, 0, 280, 'car', 'blue',11,0.0013,random.randint(1,10),35) ) 
 # vehicles.append( Trajectory(6710, 0, 450, 'car', 'green',11,0.0013,random.randint(1,10),36) )  
 # vehicles.append( Trajectory(6850, 0, 320, 'car', 'red',11,0.0013,random.randint(1,10),37) )  
@@ -199,11 +244,11 @@ vehicles.append( Trajectory(6770, 0, 500, 'car', 'green',11,0.0013,random.randin
 # vehicles.append( Trajectory(7000, 0, 350, 'car', 'blue',11,0.0013,random.randint(1,10),39) )        
 
 #group 5
-vehicles.append( Trajectory(7700, 0, 450, 'car', 'red',11,0.0013,random.randint(1,10),20) )       
-vehicles.append( Trajectory(7980, 0, 300, 'car', 'green',11,0.0013,random.randint(1,10),21) )       
-vehicles.append( Trajectory(8150, 0, 200, 'car', 'blue',11,0.0013,random.randint(1,10),22) )       
-vehicles.append( Trajectory(8470, 0, 250, 'car', 'green',11,0.0013,random.randint(1,10),23) )       
-vehicles.append( Trajectory(8700, 0, 400, 'car', 'green',11,0.0013,random.randint(1,10),24) )       
+vehicles.append( Trajectory(10240, 0, 250, 'car', 'red',2,0.0015,random.randint(1,10),20) )       
+vehicles.append( Trajectory(10370, 0, 490, 'car', 'green',2,0.0015,random.randint(1,10),21) )       
+vehicles.append( Trajectory(10520, 0, 370, 'car', 'blue',2,0.0015,random.randint(1,10),22) )       
+vehicles.append( Trajectory(11100, 0, 500, 'car', 'yellow',2,0.0015,random.randint(1,10),23) )       
+vehicles.append( Trajectory(10950, 0, 280, 'car', 'green',2,0.0015,random.randint(1,10),24) )       
 # vehicles.append( Trajectory(8200, 0, 500, 'car', 'red',11,0.0013,random.randint(1,10),45) )  
 # vehicles.append( Trajectory(8340, 0, 450, 'car', 'yellow',11,0.0013,random.randint(1,10),46) )  
 # vehicles.append( Trajectory(8610, 0, 450, 'car', 'blue',11,0.0013,random.randint(1,10),47) )  
@@ -211,11 +256,11 @@ vehicles.append( Trajectory(8700, 0, 400, 'car', 'green',11,0.0013,random.randin
 # vehicles.append( Trajectory(8800, 0, 250, 'car', 'yellow',11,0.0013,random.randint(1,10),49) )       
 
 #group 6
-vehicles.append( Trajectory(9650, 0, 200, 'car', 'red',29,0.0013,random.randint(1,10),25) )       
-vehicles.append( Trajectory(9900, 0, 300, 'car', 'green',29,0.0013,random.randint(1,10),26) )       
-vehicles.append( Trajectory(10150, 0, 500, 'car', 'blue',29,0.0013,random.randint(1,10),27) )       
-vehicles.append( Trajectory(10450, 0, 250, 'car', 'yellow',29,0.0013,random.randint(1,10),28) )       
-vehicles.append( Trajectory(10650, 0, 200, 'car', 'red',29,0.0013,random.randint(1,10),29) )       
+vehicles.append( Trajectory(12800, 0, 450, 'car', 'red',2,0.0016,random.randint(1,10),25) )       
+vehicles.append( Trajectory(13000, 0, 250, 'car', 'green',2,0.0016,random.randint(1,10),26) )       
+vehicles.append( Trajectory(13250, 0, 510, 'car', 'blue',2,0.0016,random.randint(1,10),27) )       
+vehicles.append( Trajectory(13600, 0, 540, 'car', 'yellow',2,0.0016,random.randint(1,10),28) )       
+vehicles.append( Trajectory(13450, 0, 280, 'car', 'red',2,0.0016,random.randint(1,10),29) )       
 # vehicles.append( Trajectory(10100, 0, 370, 'car', 'green',29,0.0013,random.randint(1,10),55) ) 
 # vehicles.append( Trajectory(10220, 0, 450, 'car', 'yellow',29,0.0013,random.randint(1,10),56) )  
 # vehicles.append( Trajectory(10400, 0, 300, 'car', 'yellow',29,0.0013,random.randint(1,10),57) )  
@@ -253,11 +298,11 @@ vehicles.append( Trajectory(10650, 0, 200, 'car', 'red',29,0.0013,random.randint
 
 uav = []
 uav.append(uav_class(1,640,360))
-uav.append(uav_class(2,2560,360))
-uav.append(uav_class(3,4480,360))
-uav.append(uav_class(4,6400,360))
-uav.append(uav_class(5,8320,360))
-uav.append(uav_class(6,10240,360))
+uav.append(uav_class(2,3200,360))
+uav.append(uav_class(3,5760,360))
+uav.append(uav_class(4,8320,360))
+uav.append(uav_class(5,10880,360))
+uav.append(uav_class(6,13440,360))
 
 list_vehicle1 = [vehicles[0], vehicles[1], vehicles[2],vehicles[3],vehicles[4]]  
 list_vehicle2 = [vehicles[5],vehicles[6],vehicles[7],vehicles[8],vehicles[9]] 
@@ -386,10 +431,11 @@ pid_last_UAV_5_d_y_error = 0
 pid_last_UAV_6_d_x_error = 0
 pid_last_UAV_6_d_y_error = 0
 #Draw vehicle on image
+xcenter_ROI_predect_2_late = 0
 def drawVehicle(image: np.zeros((720,1280,3), np.uint8), center_coordinates_x,center_coordinates_y, vehicletype, color):
     vehicle_icon = cv2.imread('images/' + vehicletype + '-' + color + '.jpg',1)
-    # dsize_vehicle = (101,31)
-    # vehicle_icon = cv2.resize(vehicle_icon,dsize_vehicle)
+    dsize_vehicle = (265,105) 
+    vehicle_icon = cv2.resize(vehicle_icon,dsize_vehicle)
     height_vehicle, width_vehicle = vehicle_icon.shape[0:2]
     delta_x = int((width_vehicle - 1)/2)
     delta_y = int((height_vehicle -1)/2)
@@ -576,24 +622,24 @@ def avoid_vehicle(list_vehicle : list) :
             x,y = 0,0
             if i!= j :
                 k,h = 0,0
-                if (vehicles[j].current_coordinate[0] >= vehicles[i].current_coordinate[0]  - 270 
+                if (vehicles[j].current_coordinate[0] >= vehicles[i].current_coordinate[0]  - 280 
                         and vehicles[j].current_coordinate[0]  <= vehicles[i].current_coordinate[0] 
-                        and vehicles[j].current_coordinate[1]  >= vehicles[i].current_coordinate[1] - 70 
+                        and vehicles[j].current_coordinate[1]  >= vehicles[i].current_coordinate[1] - 120 
                         and vehicles[j].current_coordinate[1]  <= vehicles[i].current_coordinate[1]  ):
                     # print ("aaaa")
                     for k in range(len(vehicles)) :
                         if k != j and k != i: 
                             if (vehicles[k].current_coordinate[0] <= vehicles[i].current_coordinate[0]
-                                    and vehicles[k].current_coordinate[0] >= vehicles[i].current_coordinate[0]-270 
+                                    and vehicles[k].current_coordinate[0] >= vehicles[i].current_coordinate[0]-280 
                                     and vehicles[k].current_coordinate[1] <= vehicles[i].current_coordinate[1] 
-                                    and  vehicles[k].current_coordinate[1] >= vehicles[i].current_coordinate[1]-70) :
+                                    and  vehicles[k].current_coordinate[1] >= vehicles[i].current_coordinate[1]-120) :
                                 x = 1
                                 for h in range(len(vehicles)) :
                                     if h != k and h != i and h!=j : 
                                         if (vehicles[h].current_coordinate[0] <= vehicles[i].current_coordinate[0] 
-                                                and vehicles[h].current_coordinate[0] >= vehicles[i].current_coordinate[0] - 270 
+                                                and vehicles[h].current_coordinate[0] >= vehicles[i].current_coordinate[0] - 280 
                                                 and vehicles[h].current_coordinate[1] >= vehicles[i].current_coordinate[1]  
-                                                and  vehicles[h].current_coordinate[1] <= vehicles[i].current_coordinate[1] + 70) :
+                                                and  vehicles[h].current_coordinate[1] <= vehicles[i].current_coordinate[1] + 120) :
                                             x = 2
                                                     
                     # if (vehicles[j].current_coordinate[1] < 300 and x==0 ):
@@ -611,16 +657,16 @@ def avoid_vehicle(list_vehicle : list) :
                             right = 1
                         if (x == 0 ) :
                             left = 1
-                if (vehicles[j].current_coordinate[0]  > (vehicles[i].current_coordinate[0] -270) 
+                if (vehicles[j].current_coordinate[0]  > (vehicles[i].current_coordinate[0] -280) 
                         and vehicles[j].current_coordinate[0]  < vehicles[i].current_coordinate[0] 
                         and vehicles[j].current_coordinate[1]  > vehicles[i].current_coordinate[1]  
-                        and vehicles[j].current_coordinate[1]  < vehicles[i].current_coordinate[1] + 70 ):
+                        and vehicles[j].current_coordinate[1]  < vehicles[i].current_coordinate[1] + 120 ):
                     for h in range(len(vehicles)) :
                         if h != j and h != i: 
                             if (vehicles[h].current_coordinate[0] < vehicles[i].current_coordinate[0] 
-                                    and vehicles[h].current_coordinate[0] > vehicles[i].current_coordinate[0]-270
+                                    and vehicles[h].current_coordinate[0] > vehicles[i].current_coordinate[0]-280
                                     and vehicles[h].current_coordinate[1] > vehicles[i].current_coordinate[1]  
-                                    and  vehicles[h].current_coordinate[1] < vehicles[i].current_coordinate[1] + 70) :
+                                    and  vehicles[h].current_coordinate[1] < vehicles[i].current_coordinate[1] + 120) :
                                 # print ("aaaa")
                                 y = 1 
                                 # for k in range(len(vehicles)) :
@@ -1058,7 +1104,7 @@ while(1):
     ycenter_ROI_6 = int((ROI_6[0][1]+ROI_6[1][1])/2)
     center_ROI_6 =(xcenter_ROI_6, ycenter_ROI_6)
     # print(list_vehicle_coordinates2)
-    print(uav[1].locationx_uav,uav[1].locationy_uav)
+    # print(uav[1].locationx_uav,uav[1].locationy_uav)
     
     # drawROI(cur_scene1, ROI_1[0], ROI_1[1],(255,0,0))
     # drawROI(cur_scene2, ROI_2[0], ROI_2[1],(255,0,0))
@@ -1168,109 +1214,75 @@ while(1):
     #     vehicles[0].speedStart = 17
     #     vehicles[0].accel = 0.0013
     
-    if count> 10 :
-        UAV_speed_x_1 += int((xcenter_ROI_predict_1 - 800)*0.01)
-        UAV_speed_y_1 += int((ycenter_ROI_predict_1 - 360)*0.01)
-        UAV_speed_x_2 += int((xcenter_ROI_predict_2 - 800)*0.01)
-        UAV_speed_y_2 += int((ycenter_ROI_predict_2 - 360)*0.01)
-        UAV_speed_x_3 += int((xcenter_ROI_predict_3 - 640)*0.01)
-        UAV_speed_y_3 += int((ycenter_ROI_predict_3 - 360)*0.01)
-        UAV_speed_x_4 += int((xcenter_ROI_predict_4 - 900)*0.01)
-        UAV_speed_y_4 += int((ycenter_ROI_predict_4 - 360)*0.01)
-        UAV_speed_x_5 += int((xcenter_ROI_predict_5 - 640)*0.01)
-        UAV_speed_y_5 += int((ycenter_ROI_predict_5 - 360)*0.01)
-        UAV_speed_x_6 += int((xcenter_ROI_predict_6 - 640)*0.01)
-        UAV_speed_y_6 += int((ycenter_ROI_predict_6 - 360)*0.01)
-        # if xcenter_ROI_predict_1 - 640 > -5 and UAV_speed_x_1 <= uav[0].speedMax:
-        # UAV_speed_x_1+=int(0.02 * (xcenter_ROI_predict_1 - 640)) + int(0.01 * ((xcenter_ROI_predict_1 - 640) - pid_last_UAV_1_d_x_error))
-        # pid_last_UAV_1_d_x_error = (xcenter_ROI_predict_1 - 640)
-        # if xcenter_ROI_predict_1 - 640 < 5 and UAV_speed_x_1 >=0:
-        #     UAV_speed_x_1-=1
-        # if ycenter_ROI_predict_1 - 360 > -5 and UAV_speed_y_1 <= 1:
-        # UAV_speed_y_1+=int(0.01 * (ycenter_ROI_predict_1 - 360)) + int(0.01 * ((ycenter_ROI_predict_1 - 360) - pid_last_UAV_1_d_y_error))
-        # pid_last_UAV_1_d_y_error = (ycenter_ROI_predict_1 - 360)
-        # if ycenter_ROI_predict_1 - 360 < 5 and UAV_speed_y_1 >=-1:
-        #     UAV_speed_y_1-=1
-        # UAV_speed_x_2+=int(0.02 * (xcenter_ROI_predict_2 - 640)) + int(0.01 * ((xcenter_ROI_predict_2 - 640) - pid_last_UAV_2_d_x_error))
-        # pid_last_UAV_2_d_x_error = (xcenter_ROI_predict_2 - 640)
+    if count > 10  :
 
-        # UAV_speed_y_2+=int(0.01 * (ycenter_ROI_predict_2 - 360)) + int(0.01 * ((ycenter_ROI_predict_2 - 360) - pid_last_UAV_2_d_y_error))
-        # pid_last_UAV_2_d_y_error = (ycenter_ROI_predict_2 - 360)
+        if xcenter_ROI_predict_1  < 640 :
+            UAV_speed_x_1+=int(0.003 * (xcenter_ROI_predict_1 - 640)) + int(0.003 * ((xcenter_ROI_predict_1 - 640) - pid_last_UAV_1_d_x_error))
+            pid_last_UAV_1_d_x_error = (xcenter_ROI_predict_1 - 640)
+        if xcenter_ROI_predict_1  > 640 :
+            UAV_speed_x_1+=int(0.008 * (xcenter_ROI_predict_1 - 740)) + int(0.008 * ((xcenter_ROI_predict_1 - 740) - pid_last_UAV_1_d_x_error))
+            pid_last_UAV_1_d_x_error = (xcenter_ROI_predict_1 - 740) 
+        
+        UAV_speed_y_2+=int(0.008 * (ycenter_ROI_predict_2 - 360)) + int(0.008 * ((ycenter_ROI_predict_2 - 360) - pid_last_UAV_2_d_y_error))
+        pid_last_UAV_2_d_y_error = (ycenter_ROI_predict_2 - 360)
 
-        # UAV_speed_x_3+=int(0.03 * (xcenter_ROI_predict_3 - 640)) + int(0.01 * ((xcenter_ROI_predict_3 - 640) - pid_last_UAV_3_d_x_error))
-        # pid_last_UAV_3_d_x_error = (xcenter_ROI_predict_3 - 640)
+        if xcenter_ROI_predict_2  < 640 :
+            UAV_speed_x_2+=int(0.003 * (xcenter_ROI_predict_2 - 640)) + int(0.003 * ((xcenter_ROI_predict_2 - 640) - pid_last_UAV_2_d_x_error))
+            pid_last_UAV_2_d_x_error = (xcenter_ROI_predict_2 - 640)
+        if xcenter_ROI_predict_2  > 640 :
+            UAV_speed_x_2+=int(0.008 * (xcenter_ROI_predict_2 - 740)) + int(0.008 * ((xcenter_ROI_predict_2 - 740) - pid_last_UAV_2_d_x_error))
+            pid_last_UAV_2_d_x_error = (xcenter_ROI_predict_2 - 740) 
 
-        # UAV_speed_y_3+=int(0.01 * (ycenter_ROI_predict_3 - 360)) + int(0.01 * ((ycenter_ROI_predict_3 - 360) - pid_last_UAV_3_d_y_error))
-        # pid_last_UAV_3_d_y_error = (ycenter_ROI_predict_3 - 360)
+        UAV_speed_y_2+=int(0.008 * (ycenter_ROI_predict_2 - 360)) + int(0.008 * ((ycenter_ROI_predict_2 - 360) - pid_last_UAV_2_d_y_error))
+        pid_last_UAV_2_d_y_error = (ycenter_ROI_predict_2 - 360)
 
-        # UAV_speed_x_4+=int(0.03 * (xcenter_ROI_predict_4 - 640)) + int(0.01 * ((xcenter_ROI_predict_4 - 640) - pid_last_UAV_4_d_x_error))
-        # pid_last_UAV_4_d_x_error = (xcenter_ROI_predict_4 - 640)
+        if xcenter_ROI_predict_3  < 640 :
+            UAV_speed_x_3+=int(0.003 * (xcenter_ROI_predict_3 - 640)) + int(0.003 * ((xcenter_ROI_predict_3 - 640) - pid_last_UAV_3_d_x_error))
+            pid_last_UAV_3_d_x_error = (xcenter_ROI_predict_3 - 640)
+        if xcenter_ROI_predict_3  > 640 :
+            UAV_speed_x_3+=int(0.008 * (xcenter_ROI_predict_3 - 740)) + int(0.008 * ((xcenter_ROI_predict_3 - 740) - pid_last_UAV_3_d_x_error))
+            pid_last_UAV_3_d_x_error = (xcenter_ROI_predict_3 - 740) 
+        
+        UAV_speed_y_3+=int(0.008 * (ycenter_ROI_predict_3 - 360)) + int(0.008 * ((ycenter_ROI_predict_3 - 360) - pid_last_UAV_3_d_y_error))
+        pid_last_UAV_3_d_y_error = (ycenter_ROI_predict_3 - 360)
 
-        # UAV_speed_y_4+=int(0.01 * (ycenter_ROI_predict_4 - 360)) + int(0.01 * ((ycenter_ROI_predict_4 - 360) - pid_last_UAV_4_d_y_error))
-        # pid_last_UAV_4_d_y_error = (ycenter_ROI_predict_4 - 360)
+        if xcenter_ROI_predict_4  < 640 :
+            UAV_speed_x_4+=int(0.003 * (xcenter_ROI_predict_4 - 640)) + int(0.003 * ((xcenter_ROI_predict_4 - 640) - pid_last_UAV_4_d_x_error))
+            pid_last_UAV_4_d_x_error = (xcenter_ROI_predict_4 - 640)
+        if xcenter_ROI_predict_4  > 640 :
+            UAV_speed_x_4+=int(0.008 * (xcenter_ROI_predict_4 - 740)) + int(0.008 * ((xcenter_ROI_predict_4 - 740) - pid_last_UAV_4_d_x_error))
+            pid_last_UAV_4_d_x_error = (xcenter_ROI_predict_4 - 740) 
 
-        # UAV_speed_x_5+=int(0.03 * (xcenter_ROI_predict_5 - 640)) + int(0.01 * ((xcenter_ROI_predict_5 - 640) - pid_last_UAV_5_d_x_error))
-        # pid_last_UAV_5_d_x_error = (xcenter_ROI_predict_5 - 640)
+        UAV_speed_y_4+=int(0.008 * (ycenter_ROI_predict_4 - 360)) + int(0.008 * ((ycenter_ROI_predict_4 - 360) - pid_last_UAV_4_d_y_error))
+        pid_last_UAV_4_d_y_error = (ycenter_ROI_predict_4 - 360)
 
-        # UAV_speed_y_5+=int(0.04 * (ycenter_ROI_predict_5 - 360)) + int(0.01 * ((ycenter_ROI_predict_5 - 360) - pid_last_UAV_5_d_y_error))
-        # pid_last_UAV_5_d_y_error = (ycenter_ROI_predict_5 - 360)
+        if xcenter_ROI_predict_5  < 640 :
+            UAV_speed_x_5+=int(0.003 * (xcenter_ROI_predict_5 - 640)) + int(0.003 * ((xcenter_ROI_predict_5 - 640) - pid_last_UAV_5_d_x_error))
+            pid_last_UAV_5_d_x_error = (xcenter_ROI_predict_5 - 640)
+        if xcenter_ROI_predict_5  > 640 :
+            UAV_speed_x_5+=int(0.008 * (xcenter_ROI_predict_5 - 740)) + int(0.008 * ((xcenter_ROI_predict_5 - 740) - pid_last_UAV_5_d_x_error))
+            pid_last_UAV_5_d_x_error = (xcenter_ROI_predict_5 - 740) 
+        
+        UAV_speed_y_5+=int(0.008 * (ycenter_ROI_predict_5 - 360)) + int(0.008 * ((ycenter_ROI_predict_5 - 360) - pid_last_UAV_5_d_y_error))
+        pid_last_UAV_5_d_y_error = (ycenter_ROI_predict_5 - 360)
 
-        # UAV_speed_x_6+=int(0.02 * (xcenter_ROI_predict_6 - 640)) + int(0.01 * ((xcenter_ROI_predict_6 - 640) - pid_last_UAV_6_d_x_error))
-        # pid_last_UAV_6_d_x_error = (xcenter_ROI_predict_6 - 640)
+        if xcenter_ROI_predict_6  < 640 :
+            UAV_speed_x_6+=int(0.003 * (xcenter_ROI_predict_6 - 640)) + int(0.003 * ((xcenter_ROI_predict_6 - 640) - pid_last_UAV_6_d_x_error))
+            pid_last_UAV_6_d_x_error = (xcenter_ROI_predict_6 - 640)
+        if xcenter_ROI_predict_6  > 640 :
+            UAV_speed_x_6+=int(0.008 * (xcenter_ROI_predict_6 - 740)) + int(0.008 * ((xcenter_ROI_predict_6 - 740) - pid_last_UAV_6_d_x_error))
+            pid_last_UAV_6_d_x_error = (xcenter_ROI_predict_6 - 740) 
 
-        # UAV_speed_y_6+=int(0.01 * (ycenter_ROI_predict_6 - 360)) + int(0.01 * ((ycenter_ROI_predict_6 - 360) - pid_last_UAV_6_d_y_error))
-        # pid_last_UAV_6_d_y_error = (ycenter_ROI_predict_6 - 360)
-
-        # if xcenter_ROI_predict_2 - 640 > -5 and UAV_speed_x_2 <= uav[1].speedMax:
-        #     UAV_speed_x_2+=2
-        # if xcenter_ROI_predict_2 - 640 < 5 and UAV_speed_x_2 >=0:
-        #     UAV_speed_x_2-=1
-        # if ycenter_ROI_predict_2 - 360 > -5 and UAV_speed_y_2 <= 1:
-        #     UAV_speed_y_2+=1
-        # if ycenter_ROI_predict_2 - 360 < 5 and UAV_speed_y_2 >=-1:
-        #     UAV_speed_y_2-=1
-
-        # if xcenter_ROI_predict_3 - 640 > -5 and UAV_speed_x_3 <= uav[2].speedMax:
-        #     UAV_speed_x_3+=2
-        # if xcenter_ROI_predict_3 - 640 < 5 and UAV_speed_x_3 >=0:
-        #     UAV_speed_x_3-=1
-        # if ycenter_ROI_predict_3 - 360 > -5 and UAV_speed_y_3 <= 1:
-        #     UAV_speed_y_3+=1
-        # if ycenter_ROI_predict_3 - 360 < 5 and UAV_speed_y_3 >=-1:
-        #     UAV_speed_y_3-=1
-
-        # if xcenter_ROI_predict_4 - 640 > -5 and UAV_speed_x_4 <= uav[3].speedMax:
-        #     UAV_speed_x_4+=2
-        # if xcenter_ROI_predict_4 - 640 < 5 and UAV_speed_x_4 >=0:
-        #     UAV_speed_x_4-=1
-        # if ycenter_ROI_predict_4 - 360 > -5 and UAV_speed_y_4 <= 1:
-        #     UAV_speed_y_4+=1
-        # if ycenter_ROI_predict_4 - 360 < 5 and UAV_speed_y_4 >=-1:
-        #     UAV_speed_y_4-=1
-
-        # if xcenter_ROI_predict_5 - 640 > -5 and UAV_speed_x_5 <= uav[4].speedMax:
-        #     UAV_speed_x_5+=2
-        # if xcenter_ROI_predict_5 - 640 < 5 and UAV_speed_x_5 >=0:
-        #     UAV_speed_x_5-=1
-        # if ycenter_ROI_predict_5 - 360 > -5 and UAV_speed_y_5 <= 1:
-        #     UAV_speed_y_5+=1
-        # if ycenter_ROI_predict_5 - 360 < 5 and UAV_speed_y_5 >=-1:
-        #     UAV_speed_y_5-=1
-
-        # if xcenter_ROI_predict_6 - 640 > -5 and UAV_speed_x_6 <= uav[5].speedMax:
-        #     UAV_speed_x_6+=2
-        # if xcenter_ROI_predict_6 - 640 < 5 and UAV_speed_x_6 >=0:
-        #     UAV_speed_x_6-=1
-        # if ycenter_ROI_predict_6 - 360 > -5 and UAV_speed_y_6 <= 1:
-        #     UAV_speed_y_6+=1
-        # if ycenter_ROI_predict_6 - 360 < 5 and UAV_speed_y_6 >=-1:
-        #     UAV_speed_y_6-=1
-
+        UAV_speed_y_6+=int(0.008 * (ycenter_ROI_predict_6 - 360)) + int(0.008 * ((ycenter_ROI_predict_6 - 360) - pid_last_UAV_6_d_y_error))
+        pid_last_UAV_6_d_y_error = (ycenter_ROI_predict_6 - 360)
+        
+        
         for vehicle in vehicles:
             vehicle.speed_x = 10*vehicle.accel + vehicle.speedStart
             vehicle.speedStart = vehicle.speed_x
-
-
+        
+    
+    
     cur_scene_main = concat_tile(   [   [cur_scene1,partition,cur_scene2,partition,cur_scene3],
                                        [cur_scene4,partition,cur_scene5,partition,cur_scene6]  ] )
     dsize_scene = (1280,720) 
@@ -1294,14 +1306,164 @@ while(1):
 
     uav[5].locationx_uav = uav[5].locationx_uav + UAV_speed_x_6
     uav[5].locationy_uav = uav[5].locationy_uav + UAV_speed_y_6
+    if count%5==0 :
+        line0 = str(count)+" "+str(uav[0].locationx_uav)+" "+str(uav[0].locationy_uav)+" "+"15\n"
+        file_UAV_0.write(line0)
 
-    # print(locationx,locationy)
+        line1 = str(count)+" "+str(uav[1].locationx_uav)+" "+str(uav[1].locationy_uav)+" "+"15\n"
+        file_UAV_1.write(line1)
+
+        line2 = str(count)+" "+str(uav[2].locationx_uav)+" "+str(uav[2].locationy_uav)+" "+"15\n"
+        file_UAV_2.write(line2)
+
+        line3 = str(count)+" "+str(uav[3].locationx_uav)+" "+str(uav[3].locationy_uav)+" "+"15\n"
+        file_UAV_3.write(line3)
+
+        line4 = str(count)+" "+str(uav[4].locationx_uav)+" "+str(uav[4].locationy_uav)+" "+"15\n"
+        file_UAV_4.write(line4)
+
+        line5 = str(count)+" "+str(uav[5].locationx_uav)+" "+str(uav[5].locationy_uav)+" "+"15\n"
+        file_UAV_5.write(line5)
+
+        line_ue_0 = str(count)+" "+str(vehicles[0].current_coordinate[0])+" "+str(vehicles[0].current_coordinate[1])+" "+"0\n"
+        file_ue_0.write(line_ue_0)
+
+        line_ue_1 = str(count)+" "+str(vehicles[1].current_coordinate[0])+" "+str(vehicles[1].current_coordinate[1])+" "+"0\n"
+        file_ue_1.write(line_ue_1)
+
+        line_ue_2 = str(count)+" "+str(vehicles[2].current_coordinate[0])+" "+str(vehicles[2].current_coordinate[1])+" "+"0\n"
+        file_ue_2.write(line_ue_2)
+
+        line_ue_3 = str(count)+" "+str(vehicles[3].current_coordinate[0])+" "+str(vehicles[3].current_coordinate[1])+" "+"0\n"
+        file_ue_3.write(line_ue_3)
+
+        line_ue_4 = str(count)+" "+str(vehicles[4].current_coordinate[0])+" "+str(vehicles[4].current_coordinate[1])+" "+"0\n"
+        file_ue_4.write(line_ue_4)
+
+        line_ue_5 = str(count)+" "+str(vehicles[5].current_coordinate[0])+" "+str(vehicles[5].current_coordinate[1])+" "+"0\n"
+        file_ue_5.write(line_ue_5)
+
+        line_ue_6 = str(count)+" "+str(vehicles[6].current_coordinate[0])+" "+str(vehicles[6].current_coordinate[1])+" "+"0\n"
+        file_ue_6.write(line_ue_6)
+
+        line_ue_7 = str(count)+" "+str(vehicles[7].current_coordinate[0])+" "+str(vehicles[7].current_coordinate[1])+" "+"0\n"
+        file_ue_7.write(line_ue_7)
+
+        line_ue_8 = str(count)+" "+str(vehicles[8].current_coordinate[0])+" "+str(vehicles[8].current_coordinate[1])+" "+"0\n"
+        file_ue_8.write(line_ue_8)
+
+        line_ue_9 = str(count)+" "+str(vehicles[9].current_coordinate[0])+" "+str(vehicles[9].current_coordinate[1])+" "+"0\n"
+        file_ue_9.write(line_ue_9)
+
+        line_ue_10 = str(count)+" "+str(vehicles[10].current_coordinate[0])+" "+str(vehicles[10].current_coordinate[1])+" "+"0\n"
+        file_ue_10.write(line_ue_10)
+
+        line_ue_11 = str(count)+" "+str(vehicles[11].current_coordinate[0])+" "+str(vehicles[11].current_coordinate[1])+" "+"0\n"
+        file_ue_11.write(line_ue_11)
+
+        line_ue_12 = str(count)+" "+str(vehicles[12].current_coordinate[0])+" "+str(vehicles[12].current_coordinate[1])+" "+"0\n"
+        file_ue_12.write(line_ue_12)
+
+        line_ue_13 = str(count)+" "+str(vehicles[13].current_coordinate[0])+" "+str(vehicles[13].current_coordinate[1])+" "+"0\n"
+        file_ue_13.write(line_ue_13)
+
+        line_ue_14 = str(count)+" "+str(vehicles[14].current_coordinate[0])+" "+str(vehicles[14].current_coordinate[1])+" "+"0\n"
+        file_ue_14.write(line_ue_14)
+
+        line_ue_15 = str(count)+" "+str(vehicles[15].current_coordinate[0])+" "+str(vehicles[15].current_coordinate[1])+" "+"0\n"
+        file_ue_15.write(line_ue_15)
+
+        line_ue_16 = str(count)+" "+str(vehicles[16].current_coordinate[0])+" "+str(vehicles[16].current_coordinate[1])+" "+"0\n"
+        file_ue_16.write(line_ue_16)
+
+        line_ue_17 = str(count)+" "+str(vehicles[17].current_coordinate[0])+" "+str(vehicles[17].current_coordinate[1])+" "+"0\n"
+        file_ue_17.write(line_ue_17)
+
+        line_ue_18 = str(count)+" "+str(vehicles[18].current_coordinate[0])+" "+str(vehicles[18].current_coordinate[1])+" "+"0\n"
+        file_ue_18.write(line_ue_18)
+
+        line_ue_19 = str(count)+" "+str(vehicles[19].current_coordinate[0])+" "+str(vehicles[19].current_coordinate[1])+" "+"0\n"
+        file_ue_19.write(line_ue_19)
+
+        line_ue_20 = str(count)+" "+str(vehicles[20].current_coordinate[0])+" "+str(vehicles[20].current_coordinate[1])+" "+"0\n"
+        file_ue_20.write(line_ue_20)
+
+        line_ue_21 = str(count)+" "+str(vehicles[21].current_coordinate[0])+" "+str(vehicles[21].current_coordinate[1])+" "+"0\n"
+        file_ue_21.write(line_ue_21)
+
+        line_ue_22 = str(count)+" "+str(vehicles[22].current_coordinate[0])+" "+str(vehicles[22].current_coordinate[1])+" "+"0\n"
+        file_ue_22.write(line_ue_22)
+
+        line_ue_23 = str(count)+" "+str(vehicles[23].current_coordinate[0])+" "+str(vehicles[23].current_coordinate[1])+" "+"0\n"
+        file_ue_23.write(line_ue_23)
+
+        line_ue_24 = str(count)+" "+str(vehicles[24].current_coordinate[0])+" "+str(vehicles[24].current_coordinate[1])+" "+"0\n"
+        file_ue_24.write(line_ue_24)
+
+        line_ue_25 = str(count)+" "+str(vehicles[25].current_coordinate[0])+" "+str(vehicles[25].current_coordinate[1])+" "+"0\n"
+        file_ue_25.write(line_ue_25)
+
+        line_ue_26 = str(count)+" "+str(vehicles[26].current_coordinate[0])+" "+str(vehicles[26].current_coordinate[1])+" "+"0\n"
+        file_ue_26.write(line_ue_26)
+
+        line_ue_27 = str(count)+" "+str(vehicles[27].current_coordinate[0])+" "+str(vehicles[27].current_coordinate[1])+" "+"0\n"
+        file_ue_27.write(line_ue_27)
+
+        line_ue_28 = str(count)+" "+str(vehicles[28].current_coordinate[0])+" "+str(vehicles[28].current_coordinate[1])+" "+"0\n"
+        file_ue_28.write(line_ue_28)
+
+        line_ue_29 = str(count)+" "+str(vehicles[29].current_coordinate[0])+" "+str(vehicles[29].current_coordinate[1])+" "+"0\n"
+        file_ue_29.write(line_ue_29)
+
     time.sleep(0.1)
     end = time.time()
     print("time : ",end-start)
     # # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
         break
+
+file_UAV_1.close
+file_UAV_2.close
+file_UAV_3.close
+file_UAV_4.close
+file_UAV_5.close
+file_UAV_6.close
+
+file_ue_1.close
+file_ue_2.close
+file_ue_3.close
+file_ue_4.close
+file_ue_5.close
+file_ue_6.close
+file_ue_7.close
+file_ue_8.close
+file_ue_9.close
+file_ue_10.close
+
+file_ue_11.close
+file_ue_12.close
+file_ue_13.close
+file_ue_14.close
+file_ue_15.close
+file_ue_16.close
+file_ue_17.close
+file_ue_18.close
+file_ue_19.close
+file_ue_20.close
+
+file_ue_21.close
+file_ue_22.close
+file_ue_23.close
+file_ue_24.close
+file_ue_25.close
+file_ue_26.close
+file_ue_27.close
+file_ue_28.close
+file_ue_29.close
+file_ue_30.close
+
+
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 del vehicles,list_vehicle_coordinates,list_vehicle,list_vehicle_predict,list_must_vehicle,list_vehicle_predict,locationx,locationy,cur_scene,count,numObj,num_max,num_min
